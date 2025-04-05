@@ -321,8 +321,9 @@ class AxonWindow(QWidget):
         self.setObjectName('MainWindow')
         self.entry.setObjectName('InputBar')
         self.list.setObjectName('ResultList')
-
-        self.load_stylesheet(os.path.join(CONFIG_ROOT, 'style.qss'))
+        
+        with open(os.path.join(CONFIG_ROOT, 'style.qss'), 'r') as f:
+            self.setStyleSheet(f.read())
     
     def post_start(self): # Post start tasks, like centering
         self.adjustSize()
@@ -429,9 +430,6 @@ class AxonWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-
     window = AxonWindow()
     window.show()
-
-    # Start the event loop and exit with the application's return code
     sys.exit(app.exec())
