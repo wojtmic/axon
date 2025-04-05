@@ -368,6 +368,8 @@ class AxonWindow(QWidget):
         item = QListWidgetItem()
         widget = AxonListItemWidget(name, subtitle)
 
+        widget.setObjectName(f'itemWidget_{id}')
+
         # item.setData(Qt.UserRole, id)
         item._id = id
         item.setSizeHint(widget.sizeHint())
