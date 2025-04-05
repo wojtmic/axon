@@ -25,8 +25,8 @@ if not os.path.exists(CONFIG_ROOT):
 if not os.path.exists(CACHE_ROOT):
     os.makedirs(CACHE_ROOT)
 
-if not os.path.exists(os.path.join(CONFIG_ROOT, 'config.jsonc')):
-    with open(os.path.join(CONFIG_ROOT, 'config.jsonc'), 'w') as f:
+if not os.path.exists(os.path.join(CONFIG_ROOT, 'launcher.jsonc')):
+    with open(os.path.join(CONFIG_ROOT, 'launcher.jsonc'), 'w') as f:
         f.write('''{
     "placeholder": "Search...",
     "entries": [
