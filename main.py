@@ -52,6 +52,9 @@ if not os.path.exists(os.path.join(CONFIG_ROOT, 'launcher.jsonc')):
     ]}''')
 
 def process_string(string, entry):
+        if string == None:
+            return ''
+
         processed = string
         processed = processed.replace("%%", entry)
 
