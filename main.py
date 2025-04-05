@@ -161,20 +161,30 @@ def gen_entries(config):
 
                     print('Cached results non-existent or outdated, regenerating')
                     generated = []
-                    apps = os.listdir('/usr/share/applications')
-                    apps.append(os.listdir(os.path.join(os.path.expanduser('~'), '.local/share/applications/')))
 
-                    parser = configparser.ConfigParser(interpolation=None, strict=False)
+                    appdirs = '/usr/share/applications', os.path.join(os.path.expanduser('~'), '.local/share/applications')
 
-                    for a in apps:
-                        parser.read(f'/usr/share/applications/{a}', encoding='utf-8')
-                        p = parser['Desktop Entry']
+                    
 
-                        entry = AxonEntry(p.get('Name'), {'run': p.get('Exec')}, None, None, p.get('GenericName'), [])
-                        entry.id = len(final)
-                        final.append(entry)
+                    for apps_dir in appdirs:
+                        files = os.listdir(apps_dir)
+                        for a in files:
+                            if not a.endswith('.desktop'):
+                                continue
+                            
+                            parser = configparser.ConfigParser(interpolation=None, strict=False)
+                            parser.read(f'{apps_dir}/{a}', encoding='utf-8')
+                            p = parser['Desktop Entry']
 
-                        generated.append(entry)
+                            genname = ''
+                            if not p.get('Comment') == None: genname = p.get('Comment')
+                            if not p.get('GenericName') == None: genname = p.get('GenericName')
+
+                            entry = AxonEntry(p.get('Name'), {'run': p.get('Exec')}, None, None, genname, [])
+                            entry.id = len(final)
+                            final.append(entry)
+
+                            generated.append(entry)
                     
                     print('List generated, now caching')
 
