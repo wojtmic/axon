@@ -171,7 +171,7 @@ def gen_entries(config):
                         for a in files:
                             if not a.endswith('.desktop'):
                                 continue
-                            
+
                             parser = configparser.ConfigParser(interpolation=None, strict=False)
                             parser.read(f'{apps_dir}/{a}', encoding='utf-8')
                             p = parser['Desktop Entry']
@@ -411,13 +411,13 @@ class AxonWindow(QWidget):
         item_id = self.list.currentItem()._id
         action = entries[item_id].action
         if 'run' in action:
-            process = subprocess.Popen(action['run'],
+            process = subprocess.Popen(process_string(action['run'], self.entry.text()),
                     stdin=subprocess.DEVNULL,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                     start_new_session=True,
                     shell=True)
-            
+
             print(f'Launched with PID {process.pid}')
 
         elif 'copy' in action:
