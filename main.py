@@ -164,7 +164,7 @@ def gen_entries(config):
                     parser = configparser.ConfigParser(interpolation=None)
 
                     for a in apps:
-                        parser.read(f'/usr/share/applications/{a}', encoding='utf-8')
+                        parser.read(f'/usr/share/applications/{a}', encoding='utf-8', strict=False)
                         p = parser['Desktop Entry']
 
                         entry = AxonEntry(p.get('Name'), {'run': p.get('Exec')}, None, None, p.get('GenericName'), [])
