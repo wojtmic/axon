@@ -162,7 +162,7 @@ def gen_entries(config):
                     print('Cached results non-existent or outdated, regenerating')
                     generated = []
                     apps = os.listdir('/usr/share/applications')
-                    # apps.append(os.listdir('/usr/local/share/applications'))
+                    apps.append(os.listdir(os.path.join(os.path.expanduser('~'), '.local/share/applications/')))
 
                     parser = configparser.ConfigParser(interpolation=None, strict=False)
 
