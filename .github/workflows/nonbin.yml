@@ -4,13 +4,15 @@ on:
   push:
     tags:
       - 'v*'
+      
+  workflow_dispatch:  
 
 jobs:
   create-release:
     name: Create and Upload Release Tarball
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Required to create releases and upload assets
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -37,11 +39,6 @@ jobs:
             pyproject.toml \
 
           echo "Archive created."
-        # tar flags:
-        # -c: create an archive
-        # -z: compress with gzip (.gz)
-        # -v: verbosely list files processed (optional)
-        # -f: allow specification of the archive file name
 
       - name: Create GitHub Release and Upload Tarball
         uses: softprops/action-gh-release@v2
