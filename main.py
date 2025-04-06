@@ -352,7 +352,7 @@ class AxonWindow(QWidget):
                 if not filter_text or filter_text in process_string(entry.name.lower(), self.entry.text()):
                     filtered_results.append(entry)
             except Exception as e:
-                print('Error while updating list:' + e)
+                print('Error while updating list:')
 
         self.list.clear()
         for entry in filtered_results:
