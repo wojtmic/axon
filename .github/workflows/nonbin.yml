@@ -50,4 +50,3 @@ jobs:
           draft: false
           prerelease: false
           files: ${{ steps.archive_info.outputs.archive_name }}
-                 PKGBUILD
