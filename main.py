@@ -347,9 +347,12 @@ class AxonWindow(QWidget):
         for entry in entries:
             if filter_text == '' and 'NOTEMPTY' in entry.flags:
                 continue
-
-            if not filter_text or filter_text in process_string(entry.name.lower(), self.entry.text()):
-                filtered_results.append(entry)
+            
+            try:
+                if not filter_text or filter_text in process_string(entry.name.lower(), self.entry.text()):
+                    filtered_results.append(entry)
+            except Exception as e:
+                print('Error while updating list:' + e)
 
         self.list.clear()
         for entry in filtered_results:

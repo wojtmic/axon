@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'axon-applauncher'
+version = '1.0.0'
+description = "Hyper-customizable app launcher made in Python"
+authors = [ {name='Wojtmic', email='mail@wojtmic.dev'} ]
+
+license = { file = "LICENSE" }
+readme = "README.md"
+
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: GPLv3"
+]
+
+dependencies = [
+    'pyqt6',
+    'simpleeval',
+    'commentjson'
+]
+
+[project.scripts]
+"axon" = "main:main"
+
+[project.urls]
+"Homepage" = 'https://github.com/wojtmic/axon'
+"Bug Tracker" = 'https://github.com/wojtmic/axon/issues'
+"Documentation" = 'https://github.com/wojtmic/axon/wiki'
