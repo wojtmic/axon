@@ -24,7 +24,7 @@ classifiers = [
 dependencies = [
     'pyqt6',
     'simpleeval',
-    'commentjson'
+    'json5'
 ]
 
 [project.scripts]

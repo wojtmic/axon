@@ -1,0 +1,29 @@
+# Maintainer: Wojtmic <mail@wojtmic.dev>
+
+pkgname=axon-applauncher
+_pkgpyname=axon_applauncher
+pkgver=1.0.0
+pkgrel=1
+
+pkgdesc="Hyper-customizable app launcher made in Python"
+arch=('any')
+
+url="https://github.com/wojtmic/axon"
+license=('GPL3')
+
+depends=('python' 'python-pyqt6' 'python-simpleeval' 'python-json5')
+makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools' 'git')
+
+source=("${pkgname}-v${pkgver}.tar.gz::https://github.com/wojtmic/axon/archive/refs/tags/v${pkgver}.tar.gz")
+
+sha256sums=('SKIP')
+
+build() {
+    python -m build --wheel --sdist --no-isolation --skip-dependency-check
+}
+
+package() {
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

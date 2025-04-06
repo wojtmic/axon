@@ -4,11 +4,11 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QListWidget, QListWidgetItem,
     QLabel
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QKeyEvent, QPalette, QColor
 import subprocess
 import re
-import commentjson
+import json5
 from typing import List
 import simpleeval
 import math
@@ -239,7 +239,7 @@ if not os.path.exists(os.path.join(CONFIG_ROOT, 'launcher.jsonc')):
     sys.exit(1)
 
 with open(os.path.join(CONFIG_ROOT, 'launcher.jsonc'), 'r') as f:
-    config = commentjson.loads(f.read())
+    config = json5.loads(f.read())
 
 entries = gen_entries(config)
 
@@ -280,6 +280,16 @@ class AxonListItemWidget(QWidget):
         t_layout.addWidget(self.sub_text)
 
         layout.addLayout(t_layout)
+    
+    def sizeHint(self):
+        width = super().sizeHint().width()
+
+        main_height = self.main_text.sizeHint().height()
+        sub_height = self.sub_text.sizeHint().height()
+
+        total_height = main_height + sub_height + 16
+
+        return QSize(width, max(total_height, 60))
 
 class AxonWindow(QWidget):
     def __init__(self, config=None):
