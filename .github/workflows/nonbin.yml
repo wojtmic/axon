@@ -1,0 +1,59 @@
+name: Publish non-built package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create and Upload Release Tarball
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create releases and upload assets
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Determine Archive and Tag Name
+        id: archive_info
+        run: |
+          TAG_NAME=${{ github.ref_name }}
+          VERSION=${TAG_NAME#v}
+          REPO_NAME=${{ github.event.repository.name }}
+          ARCHIVE_NAME="${REPO_NAME}-${VERSION}.tar.gz"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+          echo "Archive Name: $ARCHIVE_NAME"
+
+      - name: Create Source Tarball
+        run: |
+          echo "Creating archive: ${{ steps.archive_info.outputs.archive_name }}"
+          tar -czvf ${{ steps.archive_info.outputs.archive_name }} \
+            LICENSE \
+            main.py \
+            pyproject.toml \
+
+          echo "Archive created."
+        # tar flags:
+        # -c: create an archive
+        # -z: compress with gzip (.gz)
+        # -v: verbosely list files processed (optional)
+        # -f: allow specification of the archive file name
+
+      - name: Create GitHub Release and Upload Tarball
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.archive_info.outputs.tag_name }}
+          name: Release ${{ steps.archive_info.outputs.tag_name }}
+          body: |
+            Source code archive for version ${{ steps.archive_info.outputs.tag_name }}.
+            *(Add more release notes if desired)*
+          draft: false
+          prerelease: false
+          files: ${{ steps.archive_info.outputs.archive_name }}
+                 PKGBUILD
