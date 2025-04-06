@@ -24,7 +24,7 @@ jobs:
           TAG_NAME=${{ github.ref_name }}
           VERSION=${TAG_NAME#v}
           REPO_NAME=${{ github.event.repository.name }}
-          ARCHIVE_NAME="${REPO_NAME}-${VERSION}.tar.gz"
+          ARCHIVE_NAME="v${VERSION}.tar.gz"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
           echo "Version: $VERSION"
@@ -33,10 +33,7 @@ jobs:
       - name: Create Source Tarball
         run: |
           echo "Creating archive: ${{ steps.archive_info.outputs.archive_name }}"
-          tar -czvf ${{ steps.archive_info.outputs.archive_name }} \
-            LICENSE \
-            main.py \
-            pyproject.toml \
+          tar -czvf ${{ steps.archive_info.outputs.archive_name }} LICENSE main.py pyproject.toml
 
           echo "Archive created."
 
@@ -49,7 +46,7 @@ jobs:
           name: Release ${{ steps.archive_info.outputs.tag_name }}
           body: |
             Source code archive for version ${{ steps.archive_info.outputs.tag_name }}.
-            *(Add more release notes if desired)*
+
           draft: false
           prerelease: false
           files: ${{ steps.archive_info.outputs.archive_name }}
