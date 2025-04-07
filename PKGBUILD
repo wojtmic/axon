@@ -19,10 +19,12 @@ source=("${pkgname}-v${pkgver}.tar.gz::https://github.com/wojtmic/axon/archive/r
 sha256sums=('SKIP')
 
 build() {
+    cd $pkgdir
     python -m build --wheel --sdist --no-isolation --skip-dependency-check
 }
 
 package() {
+    cd $pkgdir
     python -m installer --destdir="$pkgdir" dist/*.whl
 
     install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
