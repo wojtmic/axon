@@ -1,4 +1,4 @@
-# Maintainer: Wojtmic <mail@wojtmic.dev>
+# Maintainer: Wojtmic <mail at wojtmic dot dev>
 
 pkgname=axon-applauncher
 _pkgpyname=axon_applauncher
