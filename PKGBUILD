@@ -15,7 +15,6 @@ depends=('python' 'python-pyqt6' 'python-simpleeval' 'python-json5')
 makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools' 'git')
 
 source=("${pkgname}-v${pkgver}.tar.gz::https://github.com/wojtmic/axon/archive/refs/tags/v${pkgver}.tar.gz")
-# source=("${pkgname}-v${pkgver}.tar.gz")
 
 sha256sums=('SKIP')
 
