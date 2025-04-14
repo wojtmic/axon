@@ -34,7 +34,7 @@ Nothing in Axon is hardcoded. For refrence, the default config:
 Everything can be customised. Refer to the wiki for more information.
 
 # Instalation
-~~Axon can be and is recommended to be installed from the AUR under the name `axon-applauncher`.~~ For now, clone the repo. Im working to get it on the AUR.
+Axon can be and is recommended to be installed from the AUR under the name `axon-applauncher`.
 
 # Contribution
 Axon is licensed under GPL-3.0. Feel free to open a pull request!
