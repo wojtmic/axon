@@ -441,10 +441,13 @@ class AxonWindow(QWidget):
 
             print('Copied to clipboard!')
 
-        app.exit()
+        QApplication.instance().exit()
 
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
     window = AxonWindow()
     window.show()
     sys.exit(app.exec())
+
+if __name__ == "__main__":
+    main()
