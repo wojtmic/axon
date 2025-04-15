@@ -34,3 +34,6 @@ dependencies = [
 "Homepage" = 'https://github.com/wojtmic/axon'
 "Bug Tracker" = 'https://github.com/wojtmic/axon/issues'
 "Documentation" = 'https://github.com/wojtmic/axon/wiki'
+
+[tool.setuptools.packages.find]
+where = ["."]
