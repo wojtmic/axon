@@ -33,7 +33,7 @@ jobs:
       - name: Create Source Tarball
         run: |
           echo "Creating archive: ${{ steps.archive_info.outputs.archive_name }}"
-          tar -czvf ${{ steps.archive_info.outputs.archive_name }} --exclude='./.*' .
+          tar -czvf ${{ steps.archive_info.outputs.archive_name }} pyproject.toml LICENSE src/
 
           echo "Archive created."
 
