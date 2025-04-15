@@ -164,9 +164,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 def load(): # Loads required configs
     with open(os.path.join(CONFIG_ROOT, 'launcher.jsonc'), 'r') as f:
         config = json5.loads(f.read())
-    
-    if not os.path.exists(os.path.join(CONFIG_ROOT, 'style.qss')): # REMOVE THIS WHEN DEFAULT STYLE GETS ADDED (UP)
-        return config, ''
 
     with open(os.path.join(CONFIG_ROOT, 'style.qss'), 'r') as f:
         style = f.read()
