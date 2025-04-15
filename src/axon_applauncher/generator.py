@@ -1,5 +1,5 @@
 import subprocess
-from config import CACHE_ROOT
+from .config import CACHE_ROOT
 import os
 import json
 import configparser

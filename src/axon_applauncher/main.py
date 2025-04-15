@@ -1,6 +1,6 @@
-import ui as u
-import generator as g
-import config as c
+from . import ui as u
+from . import generator as g
+from . import config as c
 from PyQt6.QtWidgets import QApplication
 import sys
 import os

@@ -5,10 +5,10 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QKeyEvent, QPalette, QColor
 import os
-from utils import process_string
-from config import CONFIG_ROOT
+from .utils import process_string
+from .config import CONFIG_ROOT
 from typing import List
-from generator import AxonEntry
+from .generator import AxonEntry
 import subprocess
 
 class AxonListItemWidget(QWidget):
