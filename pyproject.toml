@@ -37,7 +37,7 @@ Documentation = 'https://github.com/wojtmic/axon/wiki'
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["."]
+include = ["axon_applauncher"]
 
 [tool.setuptools.package-dir]
-"" = "."
+"" = "axon_applauncher"
