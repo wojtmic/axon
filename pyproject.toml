@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'axon-applauncher'
-version = '1.0.0'
+version = '1.0.2'
 description = "Hyper-customizable app launcher made in Python"
 authors = [ {name='Wojtmic', email='mail@wojtmic.dev'} ]
 
@@ -22,19 +22,22 @@ classifiers = [
 ]
 
 dependencies = [
-    'pyqt6',
+    'PyQt6',
     'simpleeval',
     'json5'
 ]
 
 [project.scripts]
-"axon" = "main:main"
+axon = "axon_applauncher.main:main"
 
 [project.urls]
-"Homepage" = 'https://github.com/wojtmic/axon'
+Homepage = 'https://github.com/wojtmic/axon'
 "Bug Tracker" = 'https://github.com/wojtmic/axon/issues'
-"Documentation" = 'https://github.com/wojtmic/axon/wiki'
+Documentation = 'https://github.com/wojtmic/axon/wiki'
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["."]
+
+[tool.setuptools.package-dir]
+"" = "."
