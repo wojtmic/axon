@@ -37,13 +37,129 @@ def ensure_exists(): # Ensures essential structure and files
                 "flags": ["NOTEMPTY"]
             }
         ]}''')
+            
+    if not os.path.exists(os.path.join(CONFIG_ROOT, 'style.qss')):
+        with open(os.path.join(CONFIG_ROOT, 'style.qss'), 'w') as f:
+            f.write('''
+/* Main window */
 
-    # DEFAULT style.qss CODE HERE! If someone pull-requests this please remove this comment!
-    # if not os.path.exists(os.path.join(CONFIG_ROOT, 'style.qss')):
-    #     with open(os.path.join(CONFIG_ROOT, 'style.qss'), 'w') as f:
-    #         f.write('''qss
-    #           idk
-    #           yes''')
+#MainWindow {
+    background-color: #2d2d2d;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #f0f0f0;
+}
+
+/* Input bar */
+
+#InputBar {
+    background-color: #3c3c3c;
+    color: #f0f0f0;
+    border: none;
+    padding: 12px 10px;
+    font-size: 14pt;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom: 1px solid #555;
+}
+#InputBar:focus {
+    background-color: #4a4a4a;
+}
+
+#InputBar::placeholder {
+    color: #a0a0a0;
+    font-size: 14pt;
+    font-weight: normal;
+}
+#InputBar::text {
+    color: #f0f0f0;
+    font-size: 14pt;
+    font-weight: normal;
+}
+#InputBar::text:selected {
+    background-color: #0078d4;
+    color: #ffffff;
+}
+
+/* Results */
+
+#ResultList {
+    background-color: #2d2d2d;
+    border: none;
+    outline: none;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+#ResultList::item {
+    min-height: 48px;
+    padding: 10px 8px;
+    margin: 2px;
+    border: 1px solid #444444;
+    border-radius: 3px;
+}
+#ResultList::item:selected {
+    background-color: #0078d4;
+    color: #ffffff;
+    border-radius: 3px;
+    border: 1px solid #66aaff;
+}
+#ResultList::item QLabel#ResultMainText {
+    color: #e0e0e0;
+    font-size: 11pt;
+    font-weight: bold;
+    background-color: transparent;
+}
+#ResultList::item QLabel#ResultSubText {
+    color: #a0a0a0;
+    font-size: 9pt;
+    font-weight: normal;
+    background-color: transparent;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    padding-bottom: 2px;
+    line-height: 1.35;
+    min-height: 18px;
+}
+#ResultList::item:selected QLabel#ResultMainText,
+#ResultList::item:selected QLabel#ResultSubText {
+    color: #ffffff;
+}
+#ResultList::item:hover {
+    background-color: #3c3c3c;
+    color: #ffffff;
+}
+#ResultList::item:selected:hover {
+    background-color: #1145d3;
+    color: #ffffff;
+}
+
+/* Scrollbar */
+
+QScrollBar:vertical {
+    border: none;
+    background: #2d2d2d;
+    width: 8px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+    background: #555;
+    min-height: 20px;
+    border-radius: 2%;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}''')
 
 def load(): # Loads required configs
     with open(os.path.join(CONFIG_ROOT, 'launcher.jsonc'), 'r') as f:
