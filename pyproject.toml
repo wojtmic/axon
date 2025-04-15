@@ -36,8 +36,4 @@ Homepage = 'https://github.com/wojtmic/axon'
 Documentation = 'https://github.com/wojtmic/axon/wiki'
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["src"]
-
-[tool.setuptools.package-dir]
-"" = "axon_applauncher"
+where = ["src"]
