@@ -2,7 +2,7 @@
 
 pkgname=axon-applauncher
 _pkgpyname=axon_applauncher
-pkgver=1.0.2
+pkgver=1.0.3
 pkgrel=1
 
 pkgdesc="Hyper-customizable app launcher made in Python"
