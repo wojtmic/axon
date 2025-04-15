@@ -3,7 +3,7 @@ from . import generator as g
 from . import config as c
 from PyQt6.QtWidgets import QApplication
 import sys
-import os
+import shutil
 
 # Function
 def main():
@@ -21,7 +21,7 @@ def main():
     # Flags
     if '--rm-cache' in sys.argv:
         print(f"Removing cache for user request ({c.CACHE_ROOT})")
-        os.rmdir(c.CACHE_ROOT)
+        shutil.rmtree(c.CACHE_ROOT)
         c.ensure_exists()
 
     # Running

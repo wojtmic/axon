@@ -65,8 +65,20 @@ class AxonWindow(QWidget):
         self.config = config
         self.styleT = style
         self.init_ui()
+        
+        self.id_entry_map = {}
+        self.populate_list()
 
         self.style_ui()
+    
+    def populate_list(self): # Populates list initially
+        self.list.clear()
+        self.id_entry_map.clear()
+        for entry in self.entries:
+            self.add_list_item(None, entry.name, entry.subtext, entry.id, entry)
+        
+        self.list.setCurrentRow(0)
+        self.adjustSize()
     
     def init_ui(self): # Init of main ui
         self.setWindowTitle('Axon')
@@ -117,29 +129,45 @@ class AxonWindow(QWidget):
         self.activateWindow()
         self.entry.setFocus()
         self.list.setCurrentRow(0)
-    
+
     def update_list(self, filter_text):
-        filtered_results: List[AxonEntry] = []
         filter_text = filter_text.lower().strip()
+        entry_text_val = self.entry.text()
+        first_visible_row = -1
 
-        for entry in self.entries:
+        self.list.setUpdatesEnabled(False)
+
+        for i in range(self.list.count()):
+            item = self.list.item(i)
+            entry = self.id_entry_map.get(item._id)
+            if not entry:
+                item.setHidden(True); continue
+
+            is_hidden = False
             if filter_text == '' and 'NOTEMPTY' in entry.flags:
-                continue
-            
-            try:
-                if not filter_text or filter_text in process_string(entry.name.lower(), self.entry.text()):
-                    filtered_results.append(entry)
-            except Exception as e:
-                pass
+                is_hidden = True
+            else:
+                try:
+                    processed_name = process_string(entry.name.lower(), entry_text_val)
+                    if filter_text and filter_text not in processed_name:
+                        is_hidden = True
+                    if '[AXON_TOKEN NOTSHOW]' in processed_name:
+                        is_hidden = True
+                except Exception as e:
+                    print(f"Filter error on item {entry.id}: {e}")
+                    is_hidden = True
 
-        self.list.clear()
-        for entry in filtered_results:
-            self.add_list_item(None, entry.name, entry.subtext, entry.id)
-        
+            item.setHidden(is_hidden)
+            if not is_hidden and first_visible_row == -1:
+                first_visible_row = i
+
+        self.list.setUpdatesEnabled(True) # Re-enable updates
         self.adjustSize()
-        self.list.setCurrentRow(0)
+
+        if first_visible_row != -1:
+            self.list.setCurrentRow(first_visible_row)
     
-    def add_list_item(self, icon, name, subtitle, id):
+    def add_list_item(self, icon, name, subtitle, id, entry):
         if '[AXON_TOKEN NOTSHOW]' in process_string(name, self.entry.text()):
             return
 
@@ -151,11 +179,12 @@ class AxonWindow(QWidget):
 
         widget.setObjectName(f'itemWidget_{id}')
 
-        # item.setData(Qt.UserRole, id)
         item._id = id
         item.setSizeHint(widget.sizeHint())
         self.list.addItem(item)
         self.list.setItemWidget(item, widget)
+        
+        self.id_entry_map[id] = entry
     
     def keyPressEvent(self, event: QKeyEvent):
         key = event.key()
