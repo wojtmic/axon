@@ -2,6 +2,9 @@
 ## WARNING: Axon is in an early BETA state! Some features may not be complete, stuff may not look good, etc.
 Axon is a hyper-configurable launcher like [Rofi](https://github.com/davatorium/rofi) or [Sherlock](https://github.com/Skxxtz/sherlock).
 
+## Development status
+Check out the [Roadmap](ROADMAP.md) for more info.
+
 # Configuration
 Nothing in Axon is hardcoded. For refrence, the default config:
 ```jsonc
