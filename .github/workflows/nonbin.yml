@@ -36,6 +36,13 @@ jobs:
           tar -czvf ${{ steps.archive_info.outputs.archive_name }} pyproject.toml LICENSE src/
 
           echo "Archive created."
+      
+      - name: Calculate SHA256 Checksum
+        id: calculate_checksum
+        run: |
+          CHECKSUM=$(sha256sum ${{ steps.archive_info.outputs.archive_name }} | awk '{ print $1 }')
+          echo "Checksum: $CHECKSUM"
+          echo "checksum=$CHECKSUM" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release and Upload Tarball
         uses: softprops/action-gh-release@v2
@@ -46,6 +53,9 @@ jobs:
           name: Release ${{ steps.archive_info.outputs.tag_name }}
           body: |
             Source code archive for version ${{ steps.archive_info.outputs.tag_name }}.
+
+            **SHA256 Checksum:**
+            `${{ steps.calculate_checksum.outputs.checksum }}`
 
           draft: false
           prerelease: false
