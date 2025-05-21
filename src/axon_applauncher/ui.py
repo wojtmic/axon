@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QKeyEvent, QPalette, QColor
 import os
-from .utils import process_string
+from .utils import process_string, search
 from .config import CONFIG_ROOT
 from typing import List
 from .generator import AxonEntry
@@ -68,14 +68,18 @@ class AxonWindow(QWidget):
         
         self.id_entry_map = {}
         self.populate_list()
+        self.update_list('')
 
         self.style_ui()
     
     def populate_list(self): # Populates list initially
         self.list.clear()
-        self.id_entry_map.clear()
-        for entry in self.entries:
-            self.add_list_item(None, entry.name, entry.subtext, entry.id, entry)
+        # self.id_entry_map.clear()
+        # for entry in self.entries:
+        #     self.add_list_item(None, entry.name, entry.subtext, entry.id, entry)
+
+        for i in range(5):
+            self.add_list_item(None, f"Entry {i}", f"Placeholder entry {i}", i)
         
         self.list.setCurrentRow(0)
         self.adjustSize()
@@ -93,7 +97,7 @@ class AxonWindow(QWidget):
         self.entry.textChanged.connect(self.update_list)
         
         self.list = QListWidget()
-        self.list.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.list.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.list.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         self.layout.addWidget(self.entry)
@@ -101,7 +105,8 @@ class AxonWindow(QWidget):
         self.setLayout(self.layout)
 
         self.update_list("")
-        self.setFixedWidth(400)
+        self.setFixedWidth(self.config['geometry']['x'])
+        self.setFixedHeight(self.config['geometry']['y'])
 
         self.post_start()
     
@@ -132,42 +137,44 @@ class AxonWindow(QWidget):
 
     def update_list(self, filter_text):
         filter_text = filter_text.lower().strip()
-        entry_text_val = self.entry.text()
-        first_visible_row = -1
 
-        self.list.setUpdatesEnabled(False)
+        # self.list.setUpdatesEnabled(False)
+        
+        results = search(self.entries, filter_text)[:self.config['geometry']['max_entries']]
 
         for i in range(self.list.count()):
             item = self.list.item(i)
-            entry = self.id_entry_map.get(item._id)
-            if not entry:
-                item.setHidden(True); continue
+            widget: AxonListItemWidget = self.list.itemWidget(item)
 
-            is_hidden = False
-            if filter_text == '' and 'NOTEMPTY' in entry.flags:
-                is_hidden = True
-            else:
-                try:
-                    processed_name = process_string(entry.name.lower(), entry_text_val)
-                    if filter_text and filter_text not in processed_name:
-                        is_hidden = True
-                    if '[AXON_TOKEN NOTSHOW]' in processed_name:
-                        is_hidden = True
-                except Exception as e:
-                    print(f"Filter error on item {entry.id}: {e}")
-                    is_hidden = True
+            try:
+                processed_name = process_string(results[i].name, self.entry.text())
+                if "[AXON_TOKEN NOTSHOW]" in processed_name:
+                    continue
 
-            item.setHidden(is_hidden)
-            if not is_hidden and first_visible_row == -1:
-                first_visible_row = i
+                # Flags
+                flags = results[i].flags
+                if "NOTEMPTY" in flags and filter_text == '':
+                    continue
+                
+                if 'ONLYEMPTY' in flags and not filter_text == '':
+                    continue
 
-        self.list.setUpdatesEnabled(True) # Re-enable updates
+                widget.main_text.setText(process_string(processed_name, self.entry.text()))
+                widget.sub_text.setText(results[i].subtext)
+                item._id = results[i].id
+
+                item.setHidden(False)
+
+            except IndexError:
+                item.setHidden(True)
+
+        # self.list.setUpdatesEnabled(True) # Re-enable updates
         self.adjustSize()
 
-        if first_visible_row != -1:
-            self.list.setCurrentRow(first_visible_row)
+        # if first_visible_row != -1:
+        #     self.list.setCurrentRow(first_visible_row)
     
-    def add_list_item(self, icon, name, subtitle, id, entry):
+    def add_list_item(self, icon, name, subtitle, id):
         if '[AXON_TOKEN NOTSHOW]' in process_string(name, self.entry.text()):
             return
 
@@ -183,8 +190,6 @@ class AxonWindow(QWidget):
         item.setSizeHint(widget.sizeHint())
         self.list.addItem(item)
         self.list.setItemWidget(item, widget)
-        
-        self.id_entry_map[id] = entry
     
     def keyPressEvent(self, event: QKeyEvent):
         key = event.key()
