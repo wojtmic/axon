@@ -7,13 +7,14 @@ import sys
 import traceback
 
 class AxonEntry:
-    def __init__(self, name, action=None, icon=None, condition=None, subtext=None, flags=None):
+    def __init__(self, name, action=None, icon=None, condition=None, subtext=None, flags=None, styleid=None):
         self.name: str = name
         self.action = action
         self.icon = icon
         self.condition = condition
         self.subtext = subtext
         self.flags = flags
+        self.styleid = styleid
 
         self.id = 0
     
@@ -118,9 +119,10 @@ def gen_entries(config): # Will generate entries based on config
                 if not 'icon' in c: c['icon'] = None
                 if not 'action' in c: c['action'] = None
                 if not 'subtext' in c: c['subtext'] = ''
+                if not 'id' in c: c['id'] = 'UntaggedEntry'
 
                 if 'condition' in c or True:
-                    entry = AxonEntry(c['name'], c['action'], c['icon'], c['condition'], c['subtext'], c['flags'])
+                    entry = AxonEntry(c['name'], c['action'], c['icon'], c['condition'], c['subtext'], c['flags'], c['id'])
                     if entry.can_run:
                         entry.id = len(final)
                         final.append(entry)
@@ -129,7 +131,7 @@ def gen_entries(config): # Will generate entries based on config
                 #     entry.id = len(final)
                 #     final.append(entry)
         except Exception as e:
-            print(f'Error ocurred while parsing config. Check config for malformations. Error below:\n\n{e}')
+            print(f'Error ocurred while parsing config. Check for malformations. Error: {e}\n\n')
             traceback.print_exc()
             sys.exit(1)
     

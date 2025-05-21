@@ -161,6 +161,13 @@ class AxonWindow(QWidget):
 
                 widget.main_text.setText(process_string(processed_name, self.entry.text()))
                 widget.sub_text.setText(results[i].subtext)
+                
+                # Styling
+                styleid = results[i].styleid
+                if not styleid == 'UntaggedEntry':
+                    widget.setObjectName(styleid)
+                    widget.setStyleSheet(self.styleT)
+
                 item._id = results[i].id
 
                 item.setHidden(False)
@@ -183,8 +190,6 @@ class AxonWindow(QWidget):
 
         item = QListWidgetItem()
         widget = AxonListItemWidget(name, subtitle)
-
-        widget.setObjectName(f'itemWidget_{id}')
 
         item._id = id
         item.setSizeHint(widget.sizeHint())
