@@ -78,7 +78,7 @@ class AxonWindow(QWidget):
         # for entry in self.entries:
         #     self.add_list_item(None, entry.name, entry.subtext, entry.id, entry)
 
-        for i in range(5):
+        for i in range(self.config['geometry']['max_entries']):
             self.add_list_item(None, f"Entry {i}", f"Placeholder entry {i}", i)
         
         self.list.setCurrentRow(0)
