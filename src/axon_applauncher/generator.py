@@ -86,7 +86,14 @@ def gen_entries(config): # Will generate entries based on config
                             if not p.get('GenericName') == None: genname = p.get('GenericName')
 
                             if not p.get('Name') in found_names:
-                                entry = AxonEntry(p.get('Name'), {'run': p.get('Exec')}, None, None, genname, [])
+                                cmd = p.get('Exec')
+                                if cmd == None:
+                                    continue
+                                split = cmd.split(' ')
+                                if len(split) > 1:
+                                    cmd = split[0]
+
+                                entry = AxonEntry(p.get('Name'), {'run': cmd}, None, None, genname, [])
                                 entry.id = len(final)
                                 final.append(entry)
                                 found_names.add(p.get('Name'))
@@ -130,6 +137,7 @@ def gen_entries(config): # Will generate entries based on config
                 #     entry = AxonEntry(c['name'], c['action'], c['icon'])
                 #     entry.id = len(final)
                 #     final.append(entry)
+
         except Exception as e:
             print(f'Error ocurred while parsing config. Check for malformations. Error: {e}\n\n')
             traceback.print_exc()
