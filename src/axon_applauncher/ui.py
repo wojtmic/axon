@@ -15,6 +15,7 @@ class AxonListItemWidget(QWidget):
     def __init__(self, main_text='Axon list item', sub_text='This is in fact a list item',
                  icon=None, parent=None):
         super().__init__(parent)
+        # self.setAutoFillBackground(True)
     
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0,5,5,5)
@@ -61,6 +62,8 @@ class AxonListItemWidget(QWidget):
 class AxonWindow(QWidget):
     def __init__(self, config=None, entries=None, style=None):
         super().__init__()
+        self.setAutoFillBackground(True)
+
         self.entries = entries
         self.config = config
         self.styleT = style
@@ -153,7 +156,7 @@ class AxonWindow(QWidget):
 
                 # Flags
                 flags = results[i].flags
-                if "NOTEMPTY" in flags and filter_text == '':
+                if 'NOTEMPTY' in flags and filter_text == '':
                     continue
                 
                 if 'ONLYEMPTY' in flags and not filter_text == '':
@@ -164,9 +167,16 @@ class AxonWindow(QWidget):
                 
                 # Styling
                 styleid = results[i].styleid
-                if not styleid == 'UntaggedEntry':
+                if not styleid == 'UntaggedEntry' and not styleid == None:
                     widget.setObjectName(styleid)
-                    widget.setStyleSheet(self.styleT)
+
+                    style = widget.style()
+                    style.unpolish(widget)
+                    style.polish(widget)
+
+                    widget.update()
+
+                    print(f'the skibidi name is {widget.objectName()}')
 
                 item._id = results[i].id
 
